@@ -1,24 +1,25 @@
 #include <Arduino.h>
+#include "config.h"
+#include <WiFiMulti.h>
 
-const int buttonPin = 4;  
-const int ledPin =  5;
+WiFiMulti wifiMulti;
 
-int buttonState = 0;
+const int LedPin = 4;
 
 void setup() {
-  Serial.begin(9600);  
-  pinMode(buttonPin, INPUT);
-  pinMode(ledPin, OUTPUT);
+  Serial.begin(921600);
+  pinMode(LedPin, OUTPUT);
+
+  wifiMulti.addAP(WIFI_SSID, WIFI_PASSWORD);
+
+  Serial.println("Connecting ...");
+  while(wifiMulti.run() != WL_CONNECTED) {
+    delay(100);
+  }
+  Serial.println("Connected to wifi");
+
 }
 
 void loop() {
-  delay(1000);
-  buttonState = digitalRead(buttonPin);
-  Serial.println(buttonState);
-  
-  if (buttonState == HIGH) {
-    digitalWrite(ledPin, HIGH);
-  } else {
-    digitalWrite(ledPin, LOW);
-  }
+  digitalWrite(LedPin, WiFi.status() == WL_CONNECTED);
 }
