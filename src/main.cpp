@@ -1,24 +1,16 @@
 #include <Arduino.h>
 
-const int buttonPin = 4;  
-const int ledPin =  5;
+const int potPin = 34;
 
-int buttonState = 0;
+int potValue = 0;
 
 void setup() {
-  Serial.begin(9600);  
-  pinMode(buttonPin, INPUT);
-  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+  pinMode(potPin, INPUT);
 }
 
 void loop() {
+  potValue = analogRead(potPin);
+  Serial.println(potValue);
   delay(1000);
-  buttonState = digitalRead(buttonPin);
-  Serial.println(buttonState);
-  
-  if (buttonState == HIGH) {
-    digitalWrite(ledPin, HIGH);
-  } else {
-    digitalWrite(ledPin, LOW);
-  }
 }
